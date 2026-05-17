@@ -10,7 +10,14 @@ const adminRoutes = require('./routes/admin');
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: [
+    'http://localhost:3000',
+    'https://goal-tracking-portal-five.vercel.app',
+    'https://goal-tracking-portal-a5e0j7jj8-aliya-siddiqha-s-projects.vercel.app'
+  ],
+  credentials: true
+}));
 app.use(express.json());
 
 // Routes
