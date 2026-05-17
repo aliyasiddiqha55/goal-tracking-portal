@@ -33,24 +33,29 @@ const ApprovalView = () => {
   };
 
   const handleApprove = async (goalId) => {
-    try {
-      await axios.put(`${API}/api/goals/approve/${goalId}`, {}, { headers });
-      toast.success('Goal approved and locked!');
-      fetchTeamGoals();
-    } catch (err) {
-      toast.error('Failed to approve goal');
-    }
+  try {
+    await axios.put(`${API}/api/goals/approve/${goalId}`, {}, { headers });
+    toast.success('Goal approved and locked!');
+    setTeamGoals(prev => prev.filter(g => g.id !== goalId));
+  } catch (err) {
+    toast.error('Failed to approve goal');
+  }
   };
 
   const handleRework = async (goalId) => {
-    try {
-      await axios.put(`${API}/api/goals/rework/${goalId}`, {}, { headers });
-      toast.success('Goal returned for rework!');
-      fetchTeamGoals();
-    } catch (err) {
-      toast.error('Failed to return goal');
-    }
-  };
+  const comment = reworkComments[goalId];
+  if (!comment?.trim()) {
+    toast.error('Please add a comment explaining what needs to be fixed!');
+    return;
+  }
+  try {
+    await axios.put(`${API}/api/goals/rework/${goalId}`, { comment }, { headers });
+    toast.success('Goal returned for rework!');
+    setTeamGoals(prev => prev.filter(g => g.id !== goalId));
+  } catch (err) {
+    toast.error('Failed to return goal');
+  }
+};
 
   const handleEdit = async (goalId) => {
     const data = editForm[goalId];
