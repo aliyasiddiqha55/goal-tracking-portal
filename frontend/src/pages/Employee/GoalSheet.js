@@ -23,9 +23,24 @@ const GoalSheet = () => {
   const [editingGoal, setEditingGoal] = useState(null);
   const [editForm, setEditForm] = useState({});
 
-  const API = 'http://localhost:5000';
+  const API = 'https://goal-tracking-portal-backend.onrender.com';
   const headers = { Authorization: `Bearer ${token}` };
-
+  const fetchGoals = async () => {
+    try {
+      const res = await axios.get(`${API}/api/goals/my-goals`, { headers });
+      setGoals(res.data);
+    } catch (err) {
+      toast.error('Failed to fetch goals');
+    }
+  };
+  const fetchThrustAreas = async () => {
+    try {
+      const res = await axios.get(`${API}/api/admin/thrust-areas`, { headers });
+      setThrustAreas(res.data);
+    } catch (err) {
+      toast.error('Failed to fetch thrust areas');
+    }
+  };
   useEffect(() => {
     fetchGoals();
     fetchThrustAreas();
@@ -35,23 +50,9 @@ const GoalSheet = () => {
     setTotalWeightage(total);
   }, [goals]);
 
-  const fetchGoals = async () => {
-    try {
-      const res = await axios.get(`${API}/api/goals/my-goals`, { headers });
-      setGoals(res.data);
-    } catch (err) {
-      toast.error('Failed to fetch goals');
-    }
-  };
+  
 
-  const fetchThrustAreas = async () => {
-    try {
-      const res = await axios.get(`${API}/api/admin/thrust-areas`, { headers });
-      setThrustAreas(res.data);
-    } catch (err) {
-      toast.error('Failed to fetch thrust areas');
-    }
-  };
+  
 
   const handleSubmitGoal = async (e) => {
     e.preventDefault();
