@@ -25,6 +25,16 @@ app.use('/api/auth', authRoutes);
 app.use('/api/goals', goalRoutes);
 app.use('/api/checkins', checkinRoutes);
 app.use('/api/admin', adminRoutes);
+// DB Test route
+app.get('/test-db', async (req, res) => {
+  try {
+    const pool = require('./config/db');
+    const result = await pool.query('SELECT NOW()');
+    res.json({ success: true, time: result.rows[0] });
+  } catch (err) {
+    res.json({ success: false, error: err.message });
+  }
+});
 
 // Health check
 app.get('/', (req, res) => {
