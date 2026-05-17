@@ -180,4 +180,98 @@ const Analytics = () => {
           <h3 style={styles.chartTitle}>
             Department Completion Rate (%)
           </h3>
-          <ResponsiveContainer width="1
+          <ResponsiveContainer width="100%" height={300}>
+      <BarChart data={deptData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis domain={[0, 100]} />
+              <Tooltip />
+              <Bar
+                dataKey="completion"
+                fill="#4f46e5"
+                name="Completion %"
+              />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      )}
+
+      {/* Manager Effectiveness */}
+      <div style={styles.tableCard}>
+        <h3 style={styles.chartTitle}>Manager Effectiveness</h3>
+        {completion.filter(r => r.role === 'manager').length === 0 ? (
+          <p style={{ color: '#a0aec0' }}>No manager data available</p>
+        ) : (
+          <table style={styles.table}>
+            <thead>
+              <tr style={styles.tableHeader}>
+                <th style={styles.th}>Manager</th>
+                <th style={styles.th}>Total Goals</th>
+                <th style={styles.th}>Approved</th>
+                <th style={styles.th}>Check-ins</th>
+                <th style={styles.th}>Completion</th>
+              </tr>
+            </thead>
+            <tbody>
+              {completion
+                .filter(r => r.role === 'manager')
+                .map((row, i) => (
+                  <tr key={i} style={styles.tableRow}>
+                    <td style={styles.td}>{row.employee_name}</td>
+                    <td style={styles.td}>{row.total_goals}</td>
+                    <td style={styles.td}>{row.approved_goals}</td>
+                    <td style={styles.td}>{row.total_checkins}</td>
+                    <td style={styles.td}>
+                      <div style={styles.progressBar}>
+                        <div style={{
+                          ...styles.progressFill,
+                          width: `${row.total_goals > 0
+                            ? Math.round((row.approved_goals /
+                              row.total_goals) * 100)
+                            : 0}%`
+                        }} />
+                        <span style={styles.progressText}>
+                          {row.total_goals > 0
+                            ? Math.round((row.approved_goals /
+                              row.total_goals) * 100)
+                            : 0}%
+                        </span>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+        )}
+      </div>
+    </div>
+  );
+};
+
+const styles = {
+  container: { padding: '24px', maxWidth: '1200px', margin: '0 auto', fontFamily: 'sans-serif' },
+  loading: { textAlign: 'center', padding: '60px', color: '#a0aec0' },
+  header: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' },
+  headerLeft: { display: 'flex', alignItems: 'center', gap: '16px' },
+  backBtn: { padding: '8px 16px', backgroundColor: '#e2e8f0', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '600' },
+  title: { fontSize: '28px', color: '#1a202c', margin: 0 },
+  summaryGrid: { display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px', marginBottom: '24px' },
+  summaryCard: { backgroundColor: 'white', padding: '20px', borderRadius: '12px', boxShadow: '0 2px 8px rgba(0,0,0,0.08)', textAlign: 'center' },
+  summaryNumber: { fontSize: '32px', fontWeight: '700', color: '#2d3748', margin: '0 0 4px' },
+  summaryLabel: { color: '#718096', margin: 0, fontSize: '14px' },
+  chartsRow: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '24px' },
+  chartCard: { backgroundColor: 'white', padding: '20px', borderRadius: '12px', boxShadow: '0 2px 8px rgba(0,0,0,0.08)' },
+  chartCardFull: { backgroundColor: 'white', padding: '20px', borderRadius: '12px', boxShadow: '0 2px 8px rgba(0,0,0,0.08)', marginBottom: '24px' },
+  chartTitle: { margin: '0 0 16px', color: '#2d3748', fontSize: '16px' },
+  tableCard: { backgroundColor: 'white', padding: '20px', borderRadius: '12px', boxShadow: '0 2px 8px rgba(0,0,0,0.08)' },
+  table: { width: '100%', borderCollapse: 'collapse' },
+  tableHeader: { backgroundColor: '#f7fafc' },
+  th: { padding: '10px 12px', textAlign: 'left', fontSize: '12px', fontWeight: '700', color: '#4a5568', textTransform: 'uppercase' },
+  tableRow: { borderTop: '1px solid #e2e8f0' },
+  td: { padding: '12px', fontSize: '14px', color: '#2d3748' },
+  progressBar: { position: 'relative', backgroundColor: '#e2e8f0', borderRadius: '10px', height: '20px', display: 'flex', alignItems: 'center' },
+  progressFill: { position: 'absolute', left: 0, top: 0, height: '100%', backgroundColor: '#4f46e5', borderRadius: '10px' },
+  progressText: { position: 'relative', zIndex: 1, fontSize: '12px', fontWeight: '700', color: '#2d3748', paddingLeft: '8px' }
+};
+
+export default Analytics;
