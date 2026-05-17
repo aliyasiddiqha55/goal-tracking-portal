@@ -1,70 +1,52 @@
-# Getting Started with Create React App
+# Goal Tracking Portal
+A web-based portal to help organizations set, track, and review employee goals across the year.
+Built for the 48-hour hackathon challeng
+## Live Links
+- App: https://goal-tracking-portal-five.vercel.app
+- API: https://goal-tracking-portal-backend.onrender.com
+- Code: https://github.com/aliyasiddiqha55/goal-tracking-portal
+## Login Details
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+| Role | Email | Password |
+|------|-------|----------|
+| Admin | admin@portal.com | password |
+| Manager | manager@portal.com | password |
+| Employee | employee@portal.com | password |
+## What It Does
+Employees create their yearly goals and submit them to their manager for approval. Once approved, goals are locked and tracked every quarter. Managers review progress and add comments. Admins manage the org setup and can see reports.
+### Phase 1 - Goal Setting
+- Employees fill a goal sheet with thrust area, target, weightage and UoM
+- Total weightage must add up to 100%, minimum 10% per goal, max 8 goals
+- Manager can approve, edit, or send back for rework
+- Approved goals get locked
+- Managers can push shared goals to the whole team
 
-## Available Scripts
+### Phase 2 - Quarterly Tracking
+- Employees log actual achievement every quarter
+- System calculates score based on UoM type
+- Manager reviews planned vs actual and adds comments
+- Portal enforces quarterly windows - cant update outside the window
 
-In the project directory, you can run:
+### Admin Features
+- Manage departments, thrust areas, users
+- Configure goal cycles and dates
+- View audit logs of all changes
+- Download CSV achievement report
+- Unlock goals if needed
 
-### `npm start`
+### Bonus Features
+- Email alerts when goals are submitted, approved or returned
+- Analytics page with charts showing team performance
+- Escalation reminders for overdue submissions
+## Tech Stack
+- Frontend: React.js hosted on Vercel
+- Backend: Node.js with Express hosted on Render
+- Database: PostgreSQL on Neon.tech
+- Auth: JWT based role login
+All hosted on free tiers - total cost is zero.
+## How to Run Locally
+git clone https://github.com/aliyasiddiqha55/goal-tracking-portal
+cd backend && npm install && node server.js
+cd frontend && npm install && npm start
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Add a .env file in backend with your DATABASE_URL and JWT_SECRET.
