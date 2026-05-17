@@ -17,7 +17,7 @@ const TeamDashboard = () => {
 
   useEffect(() => {
     fetchTeamGoals();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const fetchTeamGoals = async () => {
     try {

@@ -29,7 +29,7 @@ const GoalSheet = () => {
   useEffect(() => {
     fetchGoals();
     fetchThrustAreas();
-  }, []);
+  }, [fetchGoals, fetchThrustAreas]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     const total = goals.reduce((sum, g) => sum + parseFloat(g.weightage || 0), 0);
@@ -124,15 +124,15 @@ const GoalSheet = () => {
     }
   };
 
-  const handleResubmit = async (goalId) => {
-    try {
-      await axios.put(`${API}/api/goals/resubmit/${goalId}`, {}, { headers });
-      toast.success('Goal resubmitted!');
-      fetchGoals();
-    } catch (err) {
-      toast.error(err.response?.data?.message || 'Failed to resubmit');
-    }
-  };
+  // const handleResubmit = async (goalId) => {
+  //   try {
+  //     await axios.put(`${API}/api/goals/resubmit/${goalId}`, {}, { headers });
+  //     toast.success('Goal resubmitted!');
+  //     fetchGoals();
+  //   } catch (err) {
+  //     toast.error(err.response?.data?.message || 'Failed to resubmit');
+  //   }
+  // };
 
   const getStatusColor = (status) => {
     switch (status) {

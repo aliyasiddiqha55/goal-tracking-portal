@@ -14,10 +14,9 @@ const ManagerCheckIn = () => {
   const API = 'http://localhost:5000';
   const headers = { Authorization: `Bearer ${token}` };
   const quarters = ['Q1', 'Q2', 'Q3', 'Q4'];
-
   useEffect(() => {
     fetchTeamCheckins();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const fetchTeamCheckins = async () => {
     try {

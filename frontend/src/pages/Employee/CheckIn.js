@@ -20,7 +20,7 @@ const CheckIn = () => {
   useEffect(() => {
     fetchGoals();
     fetchCheckins();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const fetchGoals = async () => {
     try {
