@@ -146,9 +146,9 @@ const GoalSheet = () => {
           }}>
             Weightage: {totalWeightage}% / 100%
           </div>
-          {goals.length < 8 && goals.some(g => g.status === 'draft') && (
-            <button style={styles.addButton} onClick={() => setShowForm(!showForm)}>
-              + Add Goal ({8 - goals.length} remaining)
+          {goals.length < 8 && (goals.length === 0 || goals.some(g => g.status === 'draft')) && (
+           <button style={styles.addButton} onClick={() => setShowForm(!showForm)}>
+           + Add Goal ({8 - goals.length} remaining)
             </button>
           )}
         </div>
