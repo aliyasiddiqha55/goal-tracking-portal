@@ -52,10 +52,17 @@ const TeamDashboard = () => {
     return goals.filter(g => g.status === status).length;
   };
 
-  if (loading) return <div style={styles.loading}>Loading team data...</div>;
+  if (loading) return (
+  <div style={styles.loading}>
+    <div style={styles.spinner}></div>
+    <p>Loading team data...</p>
+  </div>
+);
 
   return (
+    
     <div style={styles.container}>
+     <style>{`@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }`}</style> 
       {/* Header */}
       <div style={styles.header}>
         <h1 style={styles.title}>Team Dashboard</h1>
@@ -171,6 +178,15 @@ const styles = {
   header: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' },
   title: { fontSize: '28px', color: '#1a202c', margin: 0 },
   headerButtons: { display: 'flex', gap: '12px' },
+  spinner: {
+  width: '40px',
+  height: '40px',
+  border: '4px solid #e2e8f0',
+  borderTop: '4px solid #4f46e5',
+  borderRadius: '50%',
+  animation: 'spin 1s linear infinite',
+  margin: '0 auto 16px'
+},
   navButton: { padding: '10px 20px', backgroundColor: '#4f46e5', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '600' },
   summaryGrid: { display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px', marginBottom: '24px' },
   summaryCard: { backgroundColor: 'white', padding: '20px', borderRadius: '12px', boxShadow: '0 2px 8px rgba(0,0,0,0.08)', textAlign: 'center' },
@@ -187,6 +203,7 @@ const styles = {
   th: { padding: '10px 12px', textAlign: 'left', fontSize: '12px', fontWeight: '700', color: '#4a5568', textTransform: 'uppercase' },
   tableRow: { borderTop: '1px solid #e2e8f0' },
   td: { padding: '12px', fontSize: '14px', color: '#2d3748' },
+
   statusBadge: { color: 'white', padding: '3px 8px', borderRadius: '10px', fontSize: '11px', fontWeight: '600' }
 };
 
