@@ -29,8 +29,7 @@ const GoalSheet = () => {
   useEffect(() => {
     fetchGoals();
     fetchThrustAreas();
-  }, [fetchGoals, fetchThrustAreas]); // eslint-disable-line react-hooks/exhaustive-deps
-
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     const total = goals.reduce((sum, g) => sum + parseFloat(g.weightage || 0), 0);
     setTotalWeightage(total);
