@@ -16,6 +16,7 @@ import AdminDashboard from './pages/Admin/AdminDashboard';
 import AuditLog from './pages/Admin/AuditLog';
 import Reports from './pages/Admin/Reports';
 import CycleManagement from './pages/Admin/CycleManagement';
+import Analytics from './pages/Admin/Analytics';
 
 const PrivateRoute = ({ children, roles }) => {
   const { user } = useAuth();
@@ -81,6 +82,11 @@ const AppRoutes = () => {
       <Route path="/admin/cycles" element={
         <PrivateRoute roles={['admin']}>
           <CycleManagement />
+        </PrivateRoute>
+      } />
+      <Route path="/admin/analytics" element={
+        <PrivateRoute roles={['admin']}>
+           <Analytics />
         </PrivateRoute>
       } />
 

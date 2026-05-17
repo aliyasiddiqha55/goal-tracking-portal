@@ -124,6 +124,10 @@ const AdminDashboard = () => {
             onClick={() => navigate('/admin/cycles')}>
             🗓️ Cycles
           </button>
+          <button style={styles.navBtn}
+            onClick={() => navigate('/admin/analytics')}>
+            📊 Analytics
+            </button>
         </div>
       </div>
 

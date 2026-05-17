@@ -26,7 +26,8 @@ const Navbar = () => {
       { label: '🏠 Dashboard', path: '/admin/dashboard' },
       { label: '📋 Audit Log', path: '/admin/audit' },
       { label: '📊 Reports', path: '/admin/reports' },
-      { label: '🗓️ Cycles', path: '/admin/cycles' }
+      { label: '🗓️ Cycles', path: '/admin/cycles' },
+      { label: '📊 Analytics', path: '/admin/analytics' }
     ];
     return [];
   };
