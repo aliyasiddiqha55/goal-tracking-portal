@@ -10,6 +10,7 @@ const isWindowOpen = (phaseName, cycles) => {
 const router = express.Router();
 const pool = require('../config/db');
 const { verifyToken, authorizeRoles } = require('../middleware/auth');
+const { sendEmail, emailTemplates } = require('../utils/emailService');
 
 // Create Goal (Employee)
 router.post('/create', verifyToken, authorizeRoles('employee'), async (req, res) => {
@@ -95,6 +96,22 @@ router.post('/submit', verifyToken, authorizeRoles('employee'), async (req, res)
        WHERE employee_id = $1 AND status = 'draft'`,
       [employee_id]
     );
+    // Send email to manager
+const managerResult = await pool.query(
+  `SELECT u.name, m.email as manager_email
+   FROM users u
+   LEFT JOIN users m ON u.manager_id = m.id
+   WHERE u.id = $1`,
+  [employee_id]
+);
+const userData = managerResult.rows[0];
+if (userData?.manager_email) {
+  const template = emailTemplates.goalSubmitted(
+    userData.name,
+    userData.manager_email
+  );
+  await sendEmail(template.to, template.subject, template.html);
+}
     res.json({ message: 'Goals submitted successfully' });
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -128,6 +145,19 @@ router.put('/approve/:goalId', verifyToken, authorizeRoles('manager'), async (re
   `UPDATE goals SET status = 'rework', rework_comment = $1 WHERE id = $2`,
   [comment, goalId]
 );
+// Send email to employee
+const empResult = await pool.query(
+  `SELECT u.email FROM goals g
+   LEFT JOIN users u ON g.employee_id = u.id
+   WHERE g.id = $1`,
+  [goalId]
+);
+if (empResult.rows[0]?.email) {
+  const template = emailTemplates.goalApproved(
+    empResult.rows[0].email
+  );
+  await sendEmail(template.to, template.subject, template.html);
+}
     res.json({ message: 'Goal approved and locked' });
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -143,6 +173,20 @@ router.put('/rework/:goalId', verifyToken, authorizeRoles('manager'), async (req
       `UPDATE goals SET status = 'rework' WHERE id = $1`,
       [goalId]
     );
+    // Send email to employee
+const empReworkResult = await pool.query(
+  `SELECT u.email FROM goals g
+   LEFT JOIN users u ON g.employee_id = u.id
+   WHERE g.id = $1`,
+  [goalId]
+);
+if (empReworkResult.rows[0]?.email) {
+  const template = emailTemplates.goalRework(
+    empReworkResult.rows[0].email,
+    comment || 'Please review and resubmit'
+  );
+  await sendEmail(template.to, template.subject, template.html);
+}
     res.json({ message: 'Goal returned for rework' });
   } catch (err) {
     res.status(500).json({ message: err.message });
