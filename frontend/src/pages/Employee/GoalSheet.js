@@ -4,6 +4,8 @@ import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
 import { toast } from 'react-toastify';
 
+const API = 'https://goal-tracking-portal-backend.onrender.com';
+
 const GoalSheet = () => {
   const { token } = useAuth();
   const [goals, setGoals] = useState([]);
@@ -11,6 +13,8 @@ const GoalSheet = () => {
   const [showForm, setShowForm] = useState(false);
   const [loading, setLoading] = useState(false);
   const [totalWeightage, setTotalWeightage] = useState(0);
+  const [editingGoal, setEditingGoal] = useState(null);
+  const [editForm, setEditForm] = useState({});
   const [form, setForm] = useState({
     thrust_area_id: '',
     title: '',
@@ -20,11 +24,9 @@ const GoalSheet = () => {
     target_date: '',
     weightage: ''
   });
-  const [editingGoal, setEditingGoal] = useState(null);
-  const [editForm, setEditForm] = useState({});
 
-  const API = 'https://goal-tracking-portal-backend.onrender.com';
   const headers = { Authorization: `Bearer ${token}` };
+
   const fetchGoals = async () => {
     try {
       const res = await axios.get(`${API}/api/goals/my-goals`, { headers });
@@ -33,6 +35,7 @@ const GoalSheet = () => {
       toast.error('Failed to fetch goals');
     }
   };
+
   const fetchThrustAreas = async () => {
     try {
       const res = await axios.get(`${API}/api/admin/thrust-areas`, { headers });
@@ -41,18 +44,16 @@ const GoalSheet = () => {
       toast.error('Failed to fetch thrust areas');
     }
   };
+
   useEffect(() => {
     fetchGoals();
     fetchThrustAreas();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
   useEffect(() => {
     const total = goals.reduce((sum, g) => sum + parseFloat(g.weightage || 0), 0);
     setTotalWeightage(total);
   }, [goals]);
-
-  
-
-  
 
   const handleSubmitGoal = async (e) => {
     e.preventDefault();
@@ -124,16 +125,6 @@ const GoalSheet = () => {
     }
   };
 
-  // const handleResubmit = async (goalId) => {
-  //   try {
-  //     await axios.put(`${API}/api/goals/resubmit/${goalId}`, {}, { headers });
-  //     toast.success('Goal resubmitted!');
-  //     fetchGoals();
-  //   } catch (err) {
-  //     toast.error(err.response?.data?.message || 'Failed to resubmit');
-  //   }
-  // };
-
   const getStatusColor = (status) => {
     switch (status) {
       case 'approved': return '#48bb78';
@@ -145,7 +136,6 @@ const GoalSheet = () => {
 
   return (
     <div style={styles.container}>
-      {/* Header */}
       <div style={styles.header}>
         <h1 style={styles.title}>My Goal Sheet</h1>
         <div style={styles.headerRight}>
@@ -164,7 +154,6 @@ const GoalSheet = () => {
         </div>
       </div>
 
-      {/* Add Goal Form */}
       {showForm && (
         <div style={styles.formCard}>
           <h3 style={styles.formTitle}>New Goal</h3>
@@ -266,7 +255,6 @@ const GoalSheet = () => {
         </div>
       )}
 
-      {/* Goals List */}
       <div style={styles.goalsGrid}>
         {goals.length === 0 && (
           <div style={styles.emptyState}>
@@ -297,12 +285,10 @@ const GoalSheet = () => {
               <span>⚖️ Weight: {goal.weightage}%</span>
             </div>
 
-            {/* Locked Badge */}
             {goal.is_locked && (
               <div style={styles.lockedBadge}>🔒 Locked</div>
             )}
 
-            {/* Rework Section */}
             {goal.status === 'rework' && (
               <div>
                 {goal.rework_comment && (
@@ -376,7 +362,6 @@ const GoalSheet = () => {
         ))}
       </div>
 
-      {/* Submit Button */}
       {goals.length > 0 && goals.some(g => g.status === 'draft') && (
         <div style={styles.submitSection}>
           <p style={{ color: totalWeightage === 100 ? '#276749' : '#c53030' }}>
