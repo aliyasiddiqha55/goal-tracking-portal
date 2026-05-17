@@ -8,7 +8,7 @@ const SharedGoals = () => {
   const [sharedGoals, setSharedGoals] = useState([]);
   const [weightages, setWeightages] = useState({});
 
-  const API = 'http://localhost:5000';
+  const API = 'https://goal-tracking-portal-backend.onrender.com';
   const headers = { Authorization: `Bearer ${token}` };
 
   useEffect(() => {

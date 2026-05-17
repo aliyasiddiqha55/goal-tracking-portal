@@ -12,7 +12,7 @@ const CheckIn = () => {
   const [loadingGoal, setLoadingGoal] = useState(null);
   const [form, setForm] = useState({});
 
-  const API = 'http://localhost:5000';
+  const API = 'https://goal-tracking-portal-backend.onrender.com';
   const headers = { Authorization: `Bearer ${token}` };
 
   const quarters = ['Q1', 'Q2', 'Q3', 'Q4'];

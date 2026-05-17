@@ -14,7 +14,7 @@ const PushSharedGoal = () => {
     uom_type: '', target: '', target_date: ''
   });
 
-  const API = 'http://localhost:5000';
+  const API = 'https://goal-tracking-portal-backend.onrender.com';
   const headers = { Authorization: `Bearer ${token}` };
 
   useEffect(() => {

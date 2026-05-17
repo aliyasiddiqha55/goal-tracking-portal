@@ -11,7 +11,7 @@ const ManagerCheckIn = () => {
   const [comments, setComments] = useState({});
   const [loading, setLoading] = useState(true);
 
-  const API = 'http://localhost:5000';
+  const API = 'https://goal-tracking-portal-backend.onrender.com';
   const headers = { Authorization: `Bearer ${token}` };
   const quarters = ['Q1', 'Q2', 'Q3', 'Q4'];
   useEffect(() => {
