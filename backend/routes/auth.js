@@ -6,6 +6,16 @@ const jwt = require('jsonwebtoken');
 const pool = require('../config/db');
 require('dotenv').config();
 
+// Test route
+router.get('/test', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT COUNT(*) FROM users');
+    res.json({ success: true, users: result.rows[0].count });
+  } catch (err) {
+    res.json({ success: false, error: err.message });
+  }
+});
+
 // Register
 router.post('/register', async (req, res) => {
   const { name, email, password, role, org_id, dept_id, manager_id } = req.body;
