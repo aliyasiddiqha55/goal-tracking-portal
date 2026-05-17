@@ -20,8 +20,12 @@ const ApprovalView = () => {
   const fetchTeamGoals = async () => {
     try {
       const res = await axios.get(`${API}/api/goals/team-goals`, { headers });
-      setTeamGoals(res.data);
+      console.log('Team goals:', res.data);
+      const submitted = res.data.filter(g => g.status === 'submitted');
+      console.log('Submitted goals:', submitted);
+      setTeamGoals(submitted);
     } catch (err) {
+      console.error('Error:', err);
       toast.error('Failed to fetch goals');
     } finally {
       setLoading(false);
