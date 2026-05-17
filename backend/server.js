@@ -4,6 +4,7 @@ const cors = require('cors');
 require('dotenv').config();
 
 const authRoutes = require('./routes/auth');
+const { startEscalationJob } = require('./utils/escalation');
 const goalRoutes = require('./routes/goals');
 const checkinRoutes = require('./routes/checkins');
 const adminRoutes = require('./routes/admin');
@@ -44,4 +45,5 @@ app.get('/', (req, res) => {
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
+  startEscalationJob();
 });

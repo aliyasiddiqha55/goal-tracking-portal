@@ -28,6 +28,20 @@ const AdminDashboard = () => {
   useEffect(() => {
     fetchAll();
   }, []);
+  const handleTriggerEscalation = async () => {
+  try {
+    const res = await axios.post(
+      `${API}/api/admin/trigger-escalation`,
+      {}, { headers }
+    );
+    toast.success(`Escalation done! 
+      Unsubmitted: ${res.data.result.unsubmitted}, 
+      Unapproved: ${res.data.result.unapproved}`
+    );
+  } catch (err) {
+    toast.error('Failed to trigger escalation');
+  }
+};
   const handleUnlockGoal = async (goalId) => {
   try {
     await axios.put(`${API}/api/goals/unlock/${goalId}`, {}, { headers });
@@ -128,6 +142,10 @@ const AdminDashboard = () => {
             onClick={() => navigate('/admin/analytics')}>
             📊 Analytics
             </button>
+           <button style={styles.navBtn}
+             onClick={handleTriggerEscalation}>
+              ⚠️ Run Escalation
+            </button> 
         </div>
       </div>
 

@@ -1,5 +1,6 @@
 
 const express = require('express');
+const { checkEscalations } = require('../utils/escalation');
 const router = express.Router();
 const pool = require('../config/db');
 const { verifyToken, authorizeRoles } = require('../middleware/auth');
@@ -199,6 +200,40 @@ router.get('/thrust-areas', verifyToken, async (req, res) => {
   try {
     const result = await pool.query(
       `SELECT * FROM thrust_areas WHERE org_id = $1 ORDER BY name`,
+      [org_id]
+    );
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+// Manual escalation trigger (Admin)
+router.post('/trigger-escalation', verifyToken,
+  authorizeRoles('admin'), async (req, res) => {
+  try {
+    const result = await checkEscalations();
+    res.json({ 
+      message: 'Escalation check complete!',
+      result 
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// Get escalation logs (Admin)
+router.get('/escalation-logs', verifyToken,
+  authorizeRoles('admin'), async (req, res) => {
+  const org_id = req.user.org_id;
+  try {
+    const result = await pool.query(
+      `SELECT al.*, u.name as changed_by_name, g.title as goal_title
+       FROM audit_logs al
+       LEFT JOIN users u ON al.changed_by = u.id
+       LEFT JOIN goals g ON al.goal_id = g.id
+       WHERE g.org_id = $1
+       AND al.field_changed = 'escalation'
+       ORDER BY al.changed_at DESC`,
       [org_id]
     );
     res.json(result.rows);
