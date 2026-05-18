@@ -1,25 +1,12 @@
-const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
 require('dotenv').config();
 
-const transporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com',
-  port: 587,
-  secure: false,
-  family: 4,
-  tls: {
-    rejectUnauthorized: false,
-    minVersion: 'TLSv1'
-  },
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS
-  }
-});
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const sendEmail = async (to, subject, html) => {
   try {
-    await transporter.sendMail({
-      from: `"Goal Portal" <${process.env.EMAIL_USER}>`,
+    await resend.emails.send({
+      from: 'Goal Portal <onboarding@resend.dev>',
       to,
       subject,
       html
@@ -95,7 +82,7 @@ const emailTemplates = {
            style="background: #ecc94b; color: white; padding: 10px 20px;
                   border-radius: 8px; text-decoration: none; display: inline-block;">
           Submit Check-in
-        </a>
+         </a>
       </div>
     `
   })
